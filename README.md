@@ -34,3 +34,8 @@ El objetivo del “Simulador de Gastos” es:
 •	OpenAI GPT-4 API: Para generar recomendaciones financieras personalizadas.
 •	OpenAI DALL-E API: Para crear imágenes artísticas relacionadas con la gestión financiera.
 •	Matplotlib/Seaborn: Para generar gráficos representativos de los datos.
+
+import openai
+import pandas as pd
+import matplotlib.pyplot as plt
+
