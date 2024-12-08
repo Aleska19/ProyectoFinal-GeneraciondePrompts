@@ -30,7 +30,7 @@ El objetivo del “Simulador de Gastos” es:
 
 ###### HERRAMIENTAS
 •	Python: Lenguaje principal para desarrollar el proyecto.
-	•	Google Colab: Entorno colaborativo para ejecutar y compartir el simulador.
-	•	OpenAI GPT-4 API: Para generar recomendaciones financieras personalizadas.
-	•	OpenAI DALL-E API: Para crear imágenes artísticas relacionadas con la gestión financiera.
-	•	Matplotlib/Seaborn: Para generar gráficos representativos de los datos.
+•	Google Colab: Entorno colaborativo para ejecutar y compartir el simulador.
+•	OpenAI GPT-4 API: Para generar recomendaciones financieras personalizadas.
+•	OpenAI DALL-E API: Para crear imágenes artísticas relacionadas con la gestión financiera.
+•	Matplotlib/Seaborn: Para generar gráficos representativos de los datos.
