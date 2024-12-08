@@ -37,5 +37,10 @@ El objetivo del “Simulador de Gastos” es:
 
 
 
+import openai
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
 
 
