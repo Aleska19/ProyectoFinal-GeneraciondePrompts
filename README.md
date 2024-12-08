@@ -35,3 +35,7 @@ El objetivo del “Simulador de Gastos” es:
 - OpenAI DALL-E API: Para crear imágenes artísticas relacionadas con la gestión financiera.
 - Matplotlib/Seaborn: Para generar gráficos representativos de los datos.
 
+
+
+
+
