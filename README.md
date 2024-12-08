@@ -37,162 +37,93 @@ El objetivo del “Simulador de Gastos” es:
 
 
 
-{
-  "nbformat": 4,
-  "nbformat_minor": 0,
-  "metadata": {
-    "colab": {
-      "provenance": []
-    },
-    "kernelspec": {
-      "name": "python3",
-      "display_name": "Python 3"
-    },
-    "language_info": {
-      "name": "python"
-    }
-  },
-  "cells": [
-    {
-      "cell_type": "code",
-      "execution_count": null,
-      "metadata": {
-        "id": "ckOailXGrgjl"
-      },
-      "outputs": [],
-      "source": [
-        "pip install openai matplotlib pandas\n"
-      ]
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "import openai\n",
-        "import pandas as pd\n",
-        "import matplotlib.pyplot as plt\n"
-      ],
-      "metadata": {
-        "id": "2DzO3NT8rn9M"
-      },
-      "execution_count": null,
-      "outputs": []
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "openai.api_key = \"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\""
-      ],
-      "metadata": {
-        "id": "g2S8p9sD9LQu"
-      },
-      "execution_count": null,
-      "outputs": []
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "def obtener_recomendaciones(mensaje):\n",
-        "    try:\n",
-        "        respuesta = openai.ChatCompletion.create(\n",
-        "            model=\"gpt-4\",\n",
-        "            messages=[\n",
-        "                {\"role\": \"system\", \"content\": \"Eres un asesor financiero experto.\"},\n",
-        "                {\"role\": \"user\", \"content\": mensaje},\n",
-        "            ],\n",
-        "            max_tokens=200,\n",
-        "        )\n",
-        "        return respuesta[\"choices\"][0][\"message\"][\"content\"]\n",
-        "    except Exception as e:\n",
-        "        return f\"Error al conectar con GPT-4: {e}\"\n",
-        "\n",
-        "def generar_imagen(prompt):\n",
-        "    try:\n",
-        "        respuesta = openai.Image.create(\n",
-        "            prompt=prompt,\n",
-        "            n=1,\n",
-        "            size=\"1024x1024\"\n",
-        "        )\n",
-        "        return respuesta[\"data\"][0][\"url\"]\n",
-        "    except Exception as e:\n",
-        "        return f\"Error al generar imagen: {e}\"\n"
-      ],
-      "metadata": {
-        "id": "JmIEz4zm_oOZ"
-      },
-      "execution_count": null,
-      "outputs": []
-    },
-    {
-      "cell_type": "code",
-      "source": [
-        "print(\"Bienvenido al simulador de gastos.\")\n",
-        "ingresos = float(input(\"Ingresa tus ingresos mensuales: \"))\n",
-        "categorias = [\"Alquiler\", \"Comida\", \"Transporte\", \"Entretenimiento\", \"Otros\"]\n",
-        "gastos = {}\n",
-        "\n",
-        "for categoria in categorias:\n",
-        "    gastos[categoria] = float(input(f\"Ingresa tus gastos en {categoria}: \"))\n",
-        "\n",
-        "# Paso 5: Análisis de datos\n",
-        "total_gastos = sum(gastos.values())\n",
-        "saldo = ingresos - total_gastos\n",
-        "\n",
-        "# Mostrar resultados\n",
-        "print(\"\\nResumen Financiero:\")\n",
-        "print(f\"Ingresos: ${ingresos}\")\n",
-        "print(f\"Gastos totales: ${total_gastos}\")\n",
-        "print(f\"Saldo final: ${saldo}\")\n",
-        "\n",
-        "# Paso 6: Visualización gráfica\n",
-        "df = pd.DataFrame(list(gastos.items()), columns=[\"Categoría\", \"Gasto\"])\n",
-        "df.set_index(\"Categoría\", inplace=True)\n",
-        "\n",
-        "# Gráfico de barras\n",
-        "df.plot(kind=\"bar\", legend=False, title=\"Distribución de Gastos\", color=\"skyblue\")\n",
-        "plt.ylabel(\"Gasto ($)\")\n",
-        "plt.show()\n",
-        "\n",
-        "# Gráfico de torta\n",
-        "df.plot(kind=\"pie\", y=\"Gasto\", autopct=\"%1.1f%%\", legend=False, title=\"Gastos por Categoría\")\n",
-        "plt.ylabel(\"\")\n",
-        "plt.show()\n",
-        "\n",
-        "# Paso 7: Recomendaciones con GPT-4\n",
-        "mensaje_usuario = f\"Tengo un saldo de ${saldo} después de gastos de ${total_gastos}. ¿Qué recomendaciones me das para mejorar mis finanzas?\"\n",
-        "recomendaciones = obtener_recomendaciones(mensaje_usuario)\n",
-        "print(\"\\nRecomendaciones de GPT-4:\")\n",
-        "print(recomendaciones)\n",
-        "\n",
-        "# Paso 8: Generar imagen con DALL-E\n",
-        "prompt_imagen = \"Una representación artística de la gestión de finanzas personales con categorías como ahorro, inversión y gastos diarios.\"\n",
-        "url_imagen = generar_imagen(prompt_imagen)\n",
-        "if \"http\" in url_imagen:\n",
-        "    print(\"\\nImagen generada por DALL-E:\")\n",
-        "    print(url_imagen)\n",
-        "    display(Image(url_imagen))  # Muestra la imagen directamente en Google Colab\n",
-        "else:\n",
-        "    print(\"\\nError al generar imagen:\", url_imagen)"
-      ],
-      "metadata": {
-        "colab": {
-          "base_uri": "https://localhost:8080/",
-          "height": 0
-        },
-        "id": "KdiTT2P6_umv",
-        "outputId": "76f66075-15b0-4987-b7dd-cae4af5a5aed"
-      },
-      "execution_count": null,
-      "outputs": [
-        {
-          "output_type": "stream",
-          "name": "stdout",
-          "text": [
-            "Bienvenido al simulador de gastos.\n"
-          ]
-        }
-      ]
-    }
-  ]
-}
+# -*- coding: utf-8 -*-
+"""Untitled0.ipynb
 
+Automatically generated by Colab.
+
+Original file is located at
+    https://colab.research.google.com/drive/1EY1tTdfd9PBvJRSJIOdDhRC_ZI1Buj0V
+"""
+
+pip install openai matplotlib pandas
+
+import openai
+import pandas as pd
+import matplotlib.pyplot as plt
+
+openai.api_key = "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"
+
+def obtener_recomendaciones(mensaje):
+    try:
+        respuesta = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "Eres un asesor financiero experto."},
+                {"role": "user", "content": mensaje},
+            ],
+            max_tokens=200,
+        )
+        return respuesta["choices"][0]["message"]["content"]
+    except Exception as e:
+        return f"Error al conectar con GPT-4: {e}"
+
+def generar_imagen(prompt):
+    try:
+        respuesta = openai.Image.create(
+            prompt=prompt,
+            n=1,
+            size="1024x1024"
+        )
+        return respuesta["data"][0]["url"]
+    except Exception as e:
+        return f"Error al generar imagen: {e}"
+
+print("Bienvenido al simulador de gastos.")
+ingresos = float(input("Ingresa tus ingresos mensuales: "))
+categorias = ["Alquiler", "Comida", "Transporte", "Entretenimiento", "Otros"]
+gastos = {}
+
+for categoria in categorias:
+    gastos[categoria] = float(input(f"Ingresa tus gastos en {categoria}: "))
+
+# Paso 5: Análisis de datos
+total_gastos = sum(gastos.values())
+saldo = ingresos - total_gastos
+
+# Mostrar resultados
+print("\nResumen Financiero:")
+print(f"Ingresos: ${ingresos}")
+print(f"Gastos totales: ${total_gastos}")
+print(f"Saldo final: ${saldo}")
+
+# Paso 6: Visualización gráfica
+df = pd.DataFrame(list(gastos.items()), columns=["Categoría", "Gasto"])
+df.set_index("Categoría", inplace=True)
+
+# Gráfico de barras
+df.plot(kind="bar", legend=False, title="Distribución de Gastos", color="skyblue")
+plt.ylabel("Gasto ($)")
+plt.show()
+
+# Gráfico de torta
+df.plot(kind="pie", y="Gasto", autopct="%1.1f%%", legend=False, title="Gastos por Categoría")
+plt.ylabel("")
+plt.show()
+
+# Paso 7: Recomendaciones con GPT-4
+mensaje_usuario = f"Tengo un saldo de ${saldo} después de gastos de ${total_gastos}. ¿Qué recomendaciones me das para mejorar mis finanzas?"
+recomendaciones = obtener_recomendaciones(mensaje_usuario)
+print("\nRecomendaciones de GPT-4:")
+print(recomendaciones)
+
+# Paso 8: Generar imagen con DALL-E
+prompt_imagen = "Una representación artística de la gestión de finanzas personales con categorías como ahorro, inversión y gastos diarios."
+url_imagen = generar_imagen(prompt_imagen)
+if "http" in url_imagen:
+    print("\nImagen generada por DALL-E:")
+    print(url_imagen)
+    display(Image(url_imagen))  # Muestra la imagen directamente en Google Colab
+else:
+    print("\nError al generar imagen:", url_imagen)
 
